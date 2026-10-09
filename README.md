@@ -16,27 +16,18 @@ O projeto conta com persistência de dados local, tema claro/escuro dinâmico, a
 
 ---
 
-## Layout e Telas (Tema Claro)
+## Layout e Telas 
 
 | 1. Tela Inicial | 2. Home Vazia | 3. Menu Lateral |
 | :---: | :---: | :---: |
-| ![Tela Inicial](assets/fotos/ini_claro.png) | ![Home Vazia](assets/fotos/homeva_claro.png) | ![Menu Lateral](assets/fotos/lateral_claro.png) |
+| ![Tela Inicial](assets/fotos/icone.png) | ![Home Vazia](assets/fotos/homevazia.png) | ![Menu Lateral](assets/fotos/barra.png) |
 
 | 4. Cadastro CEP | 5. Registros | 6. Home com Registros |
 | :---: | :---: | :---: |
-| ![Cadastro](assets/fotos/modal_claro.png) | ![Registros](assets/fotos/registros_claro.png) | ![Home com Registro](assets/fotos/homecom_claro.png) |
+| ![Cadastro](assets/fotos/dados.png) | ![Registros](assets/fotos/dadospre.png) | ![Home com Registro](assets/fotos/home.png) |
 
 ---
 
-## Layout e Telas (Tema Escuro)
-
-| 1. Tela Inicial | 2. Home Vazia | 3. Menu Lateral |
-| :---: | :---: | :---: |
-| ![Tela Inicial](assets/fotos/ini_escuro.png) | ![Home Vazia](assets/fotos/homeva_escuro.png) | ![Menu Lateral](assets/fotos/lateral_escuro.png) |
-
-| 4. Cadastro CEP | 5. Registros | 6. Home com Registros |
-| :---: | :---: | :---: |
-| ![Cadastro](assets/fotos/modal_escuro.png) | ![Registros](assets/fotos/registros_escuro.png) | ![Home com Registro](assets/fotos/homecom_escuro.png) |
 
 ## Tecnologias e Pacotes Utilizados
 
