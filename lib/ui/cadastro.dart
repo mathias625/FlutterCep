@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import '../models/pessoa.dart';
 import '../root/via_cep_service.dart';
@@ -26,10 +27,19 @@ class _CadastroScreenState extends State<CadastroScreen> {
 
   Future<void> _consultarCep(String valor) async {
     final cep = valor.replaceAll(RegExp(r'\D'), '');
-    if (cep.length == 8) {
-      setState(() => _carregandoCep = true);
+
+    if (cep.length != 8) {
+      return;
+    }
+
+    setState(() {
+      _carregandoCep = true;
+    });
+
+    try {
       final dados = await ViaCepService.buscarCep(cep);
-      setState(() => _carregandoCep = false);
+
+      if (!mounted) return;
 
       if (dados != null) {
         _ruaController.text = dados['logradouro'] ?? '';
@@ -37,11 +47,25 @@ class _CadastroScreenState extends State<CadastroScreen> {
         _cidadeController.text = dados['localidade'] ?? '';
         _estadoController.text = dados['uf'] ?? '';
       } else {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('CEP não encontrado!')),
-          );
-        }
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('CEP não encontrado ou falha na consulta!'),
+          ),
+        );
+      }
+    } catch (e) {
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Erro ao consultar CEP. Verifique sua conexão.'),
+        ),
+      );
+    } finally {
+      if (mounted) {
+        setState(() {
+          _carregandoCep = false;
+        });
       }
     }
   }
@@ -65,6 +89,19 @@ class _CadastroScreenState extends State<CadastroScreen> {
   }
 
   @override
+  void dispose() {
+    _nomeController.dispose();
+    _cepController.dispose();
+    _numeroController.dispose();
+    _complementoController.dispose();
+    _ruaController.dispose();
+    _bairroController.dispose();
+    _cidadeController.dispose();
+    _estadoController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -82,7 +119,8 @@ class _CadastroScreenState extends State<CadastroScreen> {
                   labelText: 'Nome',
                   border: OutlineInputBorder(),
                 ),
-                validator: (val) => val == null || val.isEmpty ? 'Informe o nome' : null,
+                validator: (val) =>
+                    val == null || val.isEmpty ? 'Informe o nome' : null,
               ),
               const SizedBox(height: 12),
               TextFormField(
@@ -94,12 +132,15 @@ class _CadastroScreenState extends State<CadastroScreen> {
                   suffixIcon: _carregandoCep
                       ? const Padding(
                           padding: EdgeInsets.all(10.0),
-                          child: CircularProgressIndicator(strokeWidth: 2),
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                          ),
                         )
                       : const Icon(Icons.search),
                 ),
                 onChanged: _consultarCep,
-                validator: (val) => val == null || val.isEmpty ? 'Informe o CEP' : null,
+                validator: (val) =>
+                    val == null || val.isEmpty ? 'Informe o CEP' : null,
               ),
               const SizedBox(height: 12),
               Row(
@@ -112,7 +153,8 @@ class _CadastroScreenState extends State<CadastroScreen> {
                         labelText: 'Número',
                         border: OutlineInputBorder(),
                       ),
-                      validator: (val) => val == null || val.isEmpty ? 'Obrigatório' : null,
+                      validator: (val) =>
+                          val == null || val.isEmpty ? 'Obrigatório' : null,
                     ),
                   ),
                   const SizedBox(width: 8),
@@ -184,7 +226,10 @@ class _CadastroScreenState extends State<CadastroScreen> {
                 height: 50,
                 child: ElevatedButton(
                   onPressed: _salvar,
-                  child: const Text('Salvar Cadastro', style: TextStyle(fontSize: 16)),
+                  child: const Text(
+                    'Salvar Cadastro',
+                    style: TextStyle(fontSize: 16),
+                  ),
                 ),
               ),
             ],
